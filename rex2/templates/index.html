@@ -1,0 +1,412 @@
+<head>
+  <style>
+    .dialog {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .dialog > div {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 10px;
+      width: 20vw;
+      height: 20vh;
+    }
+    .dialog > div > form {
+      display: flex;
+      width: calc(100% - 10px);
+      height: calc(100% - 30px);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      padding-left: 5px;
+      padding-right: 5px;
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+    .open-dialog {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #00ff00;
+      color: #ffffff;
+      font-size: 30px;
+      border: none;
+      outline: none;
+      z-index: 50;
+    }
+    .close-dialog {
+      position: relative;
+      top: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 20px;
+      border: none;
+      outline: none;
+    }
+    .send {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: calc(100% - 20px);
+      border: 1px solid #000000;
+      border-radius: 10px;
+    }
+    .send-text {
+      width: calc(100% - 50px);
+      height: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      font-size: 20px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+    .send-btns-area {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 50px;
+      height: 100%;
+    }
+    .send-btn {
+      width: 45px;
+      height: 45px;
+      border: none;
+      outline: none;
+      color:#888;
+      font-size: 30px;
+      display: flex;
+      background-color: transparent;
+      justify-content: center;
+      align-items: center;
+    }
+    /*make the scroll bar for .send-text look better for all browsers*/
+    .send-text::-webkit-scrollbar {
+      width: 2px;
+    }
+    .send-text::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    .send-text::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+    .message-container {
+      display: flex;
+      justify-content: right;
+      align-items: center;
+      align-content: center;
+      width: 100vw;
+      flex-direction: column-reverse;
+      margin: 0;
+      padding: 0;
+    }
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        flex-direction: row;
+    }
+    .card {
+        margin: 10px;
+        width: 300px;
+        min-height: 100px;
+        border: 1px solid #ccc;
+        border-radius: 35px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+        padding: 10px;
+    }
+    .card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .card:hover{
+        transform: scale(1.1);
+    }
+    .card-pfp-text {
+        position: absolute;
+        flex-shrink: 0;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 50%;
+        display: flex;
+        aspect-ratio: 1/1;
+        text-align: center;
+        justify-content: space-around;
+        align-items: center;
+        align-self: flex-start;
+        align-content: center;
+        width: 50px;
+        background-color: black;
+        color: white;
+        z-index: 200;
+    }
+    .card-title {
+        font-size: 1.5em;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    .card-header{
+        flex-shrink: 0;
+        width: 100%;
+        font-weight: bold;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        z-index: 100;
+    }
+    
+    .card-content {
+        font-size: 1.2em;
+        width: 100%;
+        text-align: center;
+    }
+    .card-footer {
+        text-align: end;
+        width: 100%;
+        color: #ccc;
+        box-shadow: 1px 2px 3px 4px solid black;
+    }
+    /*create some background color classes*/
+    .bg-red {
+        background-color: red;
+    }
+    .bg-green {
+        background-color: green;
+    }
+    .bg-blue {
+        background-color: blue;
+    }
+    .bg-yellow {
+        background-color: yellow;
+    }
+    .bg-orange {
+        background-color: orange;
+    }
+    .bg-purple {
+        background-color: purple;
+    }
+    .bg-pink {
+        background-color: pink;
+    }
+    .bg-black {
+        background-color: black;
+    }
+    .message {
+      margin: 10px;
+      width: 100%;
+      box-shadow: 0px 1px 0px 0px #ccc;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: center;
+      align-content: center;
+      padding: 10px;
+  }
+  </style>
+  <script>
+    let timeouts = new Map();
+    let people_colors = new Map();
+    const COLORS = ["red", "green", "blue", "yellow", "orange", "purple", "pink", "black"];
+    const TIMEOUT = 5000;
+    window.onload = () => {
+      document.getElementById("send1").addEventListener("submit", (e) => {
+        e.preventDefault();
+        let form = document.getElementById("send1");
+        let formData = new FormData(form);
+        for(let pair of formData.entries()) {
+          console.log(pair[0]+ ', '+ pair[1]);
+        }
+        fetch("{{ url_for('messages.message') }}", {
+          method: "POST",
+          body: formData,
+        }).then(async (res) => {
+          await res;
+          document.getElementById("nm").style.display = "none";
+        });
+      });
+      document.getElementById("od1").addEventListener("click", () => {
+        document.getElementById("nm").style.display = "flex";
+      });
+      document.getElementById("cd1").addEventListener("click", () => {
+        document.getElementById("nm").style.display = "none";
+      });
+      var source = new EventSource("{{ url_for('sse.stream') }}");
+      source.addEventListener(
+        "ping",
+        function (event) {
+          var data = JSON.parse(event.data);
+          console.log("The server says " + event.data);
+          if (timeouts.has(data.name)) {
+            clearTimeout(timeouts.get(data.name));
+            document.getElementById("dev-" + data.ip).querySelector(".card-footer").innerText = (new Date()).toLocaleString();
+            timeouts.set(
+              data.name,
+              setTimeout(() => {
+                document
+                  .getElementById("active")
+                  .removeChild(document.getElementById("dev-" + data.ip));
+                timeouts.delete(data.name);
+              }, TIMEOUT)
+            );
+          } else {
+            let elem = document.createElement("div");
+            elem.classList.add("card");
+            elem.id = "dev-" + data.ip;
+            let header = document.createElement("div");
+            header.classList.add("card-header");
+            header.innerText = data.name;
+            let content = document.createElement("div");
+            content.classList.add("card-content");
+            content.innerText = data.ip;
+            let pfp = document.createElement("div");
+            pfp.classList.add("card-pfp-text");
+            pfp.innerText = data.name[0];
+            let color_class = people_colors.get(data.name);
+            if (color_class == undefined) {
+              color_class = COLORS[Math.floor(Math.random() * COLORS.length)];
+              people_colors.set(data.name, color_class);
+            }
+            pfp.classList.add("bg-" + color_class);
+            let footer = document.createElement("div");
+            footer.classList.add("card-footer");
+            footer.innerText = (new Date()).toLocaleString();
+            header.appendChild(pfp);
+            elem.appendChild(header);
+            elem.appendChild(content);
+            elem.appendChild(footer);
+            document.getElementById("active").appendChild(elem);
+            timeouts.set(
+              data.name,
+              setTimeout(() => {
+                document.getElementById("active").removeChild(elem);
+                timeouts.delete(data.name);
+              }, TIMEOUT)
+            );
+          }
+        },
+        false
+      );
+      source.addEventListener(
+        "message",
+        function (event) {
+          var data = JSON.parse(event.data);
+          console.log("The server says " + event.data);
+          let elem = document.createElement("div");
+            elem.classList.add("message");
+            elem.id = "msg-" + data.id;
+            let header = document.createElement("div");
+            header.classList.add("card-header");
+            header.innerText = data.name;
+            let content = document.createElement("div");
+            content.classList.add("card-content");
+            content.innerText = data.message;
+            let pfp = document.createElement("div");
+            pfp.classList.add("card-pfp-text");
+            pfp.innerText = data.name[0];
+            let color_class = people_colors.get(data.name);
+            if (color_class == undefined) {
+              color_class = COLORS[Math.floor(Math.random() * COLORS.length)];
+              people_colors.set(data.name, color_class);
+            }
+            pfp.classList.add("bg-" + color_class);
+            let footer = document.createElement("div");
+            footer.classList.add("card-footer");
+            footer.innerText = (new Date()).toLocaleString();
+            header.appendChild(pfp);
+            elem.appendChild(header);
+            elem.appendChild(content);
+            elem.appendChild(footer);
+            document.getElementById("messages").appendChild(elem);
+        },
+        false
+      );
+      source.addEventListener(
+        "error",
+        function (event) {
+          alert("Failed to connect to event stream. Is Redis running?");
+        },
+        false
+      );
+      let prev = {{ previous() | safe }};
+      for(let row of prev){
+        let [id, name, message] = row;
+        let elem = document.createElement("div");
+            elem.classList.add("message");
+            elem.id = "msg-" + id;
+            let header = document.createElement("div");
+            header.classList.add("card-header");
+            header.innerText = name;
+            let content = document.createElement("div");
+            content.classList.add("card-content");
+            content.innerText = message;
+            let pfp = document.createElement("div");
+            pfp.classList.add("card-pfp-text");
+            pfp.innerText = name[0];
+            let color_class = people_colors.get(name);
+            if (color_class == undefined) {
+              color_class = COLORS[Math.floor(Math.random() * COLORS.length)];
+              people_colors.set(name, color_class);
+            }
+            pfp.classList.add("bg-" + color_class);
+            let footer = document.createElement("div");
+            footer.classList.add("card-footer");
+            footer.innerText = "history";
+            header.appendChild(pfp);
+            elem.appendChild(header);
+            elem.appendChild(content);
+            elem.appendChild(footer);
+            document.getElementById("messages").appendChild(elem);
+      }
+    };
+  </script>
+</head>
+<h1>active</h1>
+<div id="active" class="card-container"></div>
+<h1>messages</h1>
+<div id="messages" class="message-container">
+</div>
+<div id="nm" class="dialog" style="display: none">
+  <div>
+    <button class="close-dialog" id="cd1" type="reset">x</button>
+    <form action="{{ url_for('messages.message') }}" method="post" id="send1">
+      <div class="send">
+        <textarea name="message" id="message" class="send-text"></textarea>
+        <div class="send-btns-area">
+          <button class="send-btn">></button>
+          <input type="file" name="file" id="file" accept=".jpg,.png" hidden />
+          <label for="file" class="send-btn">+</label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<button class="open-dialog" id="od1" type="button">+</button>

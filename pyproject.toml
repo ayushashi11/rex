@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "rex2"
+version = "0.1.0"
+description = ""
+authors = ["ayushashi11 <ayushashi11@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = {extras = ["async"], version = "^3.0.0"}
+flask-sse = "^1.0.0"
+mqttudp = "^0.1.post1"
+colorama = "^0.4.6"
+flask-executor = "^1.0.0"
+
+[tool.poetry.scripts]
+app = "rex2:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
