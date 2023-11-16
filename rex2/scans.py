@@ -30,6 +30,9 @@ def recv(type:str,topic:str,message:str,something:int,ip:str):
         logging.info("sql loaded")
         conn = sqlite3.connect('rex.db')
         c = conn.cursor()
+        if data["name"]==session["name"]:
+            sse.publish(data, type='message')
+            return
         c.execute("SELECT * FROM messages WHERE id=? and user=?",(data["id"],data["name"]))
         if len(c.fetchall()) != 0:
             return
