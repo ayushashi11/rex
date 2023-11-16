@@ -16,10 +16,10 @@ def message():
     last_id = c.execute("SELECT * FROM messages WHERE user=? ORDER BY id DESC LIMIT 1", (session["name"],)).fetchone()
     if last_id is None or len(last_id) == 0:
         last_id =[ 0]
-    c.execute("INSERT INTO messages VALUES (?,?,?)",(last_id[0]+1,session["name"],data["message"]))
+    c.execute("INSERT INTO messages VALUES (?,?,?)",(int(last_id[0])+1,session["name"],data["message"]))
     conn.commit()
     conn.close()
-    me.send_publish("message", json.dumps({"id":last_id[0]+1,"name":session["name"],"message":data["message"]}).encode())
+    me.send_publish("message", json.dumps({"id":int(last_id[0])+1,"name":session["name"],"message":data["message"]}).encode())
     return "OK"
 
 def fns():
